@@ -1,0 +1,5 @@
+namePrefix: iter8-
+namespace: iter8-system
+resources:
+- github.com/iter8-tools/etc3/config/rbac-iter8/?ref=main
+- ../../install/rbac

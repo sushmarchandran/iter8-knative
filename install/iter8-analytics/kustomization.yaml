@@ -1,0 +1,11 @@
+namePrefix: iter8-
+
+resources:
+- github.com/iter8-tools/iter8-analytics/install/kubernetes/kustomize/?ref=master
+
+configMapGenerator:
+- name: analytics
+  files:
+  - config.yaml
+generatorOptions:
+  disableNameSuffixHash: true  

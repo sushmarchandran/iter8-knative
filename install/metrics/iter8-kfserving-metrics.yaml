@@ -1,0 +1,178 @@
+apiVersion: iter8.tools/v2alpha1
+kind: Metric
+metadata:
+  name: 95th-percentile-tail-latency
+  namespace: iter8-system
+spec:
+  description: 95th percentile tail latency
+  params:
+    query: histogram_quantile(0.95, sum(rate(revision_app_request_latencies_bucket{service_name=~'.*$name'}[$interval])) by (le))
+  provider: prometheus
+  sample_size:
+    name: request-count
+  type: gauge
+  units: milliseconds
+---
+apiVersion: iter8.tools/v2alpha1
+kind: Metric
+metadata:
+  name: container-cpu-load-average-10s
+  namespace: iter8-system
+spec:
+  description: Value of container cpu load average over the last 10 seconds
+  params:
+    query: container_cpu_load_average_10s{container='kfserving-container', id=~'/kubepods.*',pod=~'.*$name.*'}
+  provider: prometheus
+  type: gauge
+---
+apiVersion: iter8.tools/v2alpha1
+kind: Metric
+metadata:
+  name: container-fs-io-time-seconds-total
+  namespace: iter8-system
+spec:
+  description: Cumulative count of seconds spent doing I/Os
+  params:
+    query: container_fs_io_time_seconds_total{container='kfserving-container', id=~'/kubepods.*',pod=~'.*$name.*'} or on() vector(0)
+  provider: prometheus
+  type: counter
+  units: seconds
+---
+apiVersion: iter8.tools/v2alpha1
+kind: Metric
+metadata:
+  name: container-memory-failcnt
+  namespace: iter8-system
+spec:
+  description: Number of times memory usage hit resource limit
+  params:
+    query: container_memory_failcnt{container='kfserving-container', id=~'/kubepods.*', pod=~'.*$name.*'} or on() vector(0)
+  provider: prometheus
+  type: counter
+---
+apiVersion: iter8.tools/v2alpha1
+kind: Metric
+metadata:
+  name: container-memory-usage-bytes
+  namespace: iter8-system
+spec:
+  description: Current memory usage, including all memory regardless of when it was accessed
+  params:
+    query: container_memory_usage_bytes{container='kfserving-container', id=~'/kubepods.*', pod=~'.*$name.*'}
+  provider: prometheus
+  type: gauge
+  units: bytes
+---
+apiVersion: iter8.tools/v2alpha1
+kind: Metric
+metadata:
+  name: container-network-receive-errors-total
+  namespace: iter8-system
+spec:
+  description: Cumulative count of errors encountered while receiving
+  params:
+    query: container_network_receive_errors_total{container='kfserving-container', id=~'/kubepods.*', pod=~'.*$name.*'} or on() vector(0)
+  provider: prometheus
+  type: counter
+---
+apiVersion: iter8.tools/v2alpha1
+kind: Metric
+metadata:
+  name: container-network-transmit-errors-total
+  namespace: iter8-system
+spec:
+  description: Cumulative count of errors encountered while transmitting
+  params:
+    query: container_network_transmit_errors_total{container='kfserving-container', id=~'/kubepods.*', pod=~'.*$name.*'} or on() vector(0)
+  provider: prometheus
+  type: counter
+---
+apiVersion: iter8.tools/v2alpha1
+kind: Metric
+metadata:
+  name: container-processes
+  namespace: iter8-system
+spec:
+  description: Number of processes running inside the container
+  params:
+    query: container_processes{container='kfserving-container', id=~'/kubepods.*', pod=~'.*$name.*'}
+  provider: prometheus
+  type: gauge
+---
+apiVersion: iter8.tools/v2alpha1
+kind: Metric
+metadata:
+  name: container-tasks-state
+  namespace: iter8-system
+spec:
+  description: Number of tasks in given state (sleeping, running, stopped, uninterruptible, or ioawaiting)
+  params:
+    query: container_tasks_state{container='kfserving-container', id=~'/kubepods.*', pod=~'.*$name.*', state='running'}
+  provider: prometheus
+  type: gauge
+---
+apiVersion: iter8.tools/v2alpha1
+kind: Metric
+metadata:
+  name: container-throttled-seconds-total
+  namespace: iter8-system
+spec:
+  description: Total time duration the container has been throttled
+  params:
+    query: container_cpu_cfs_throttled_seconds_total{container='kfserving-container', id=~'/kubepods.*', pod=~'.*$name.*'} or on() vector(0)
+  provider: prometheus
+  type: counter
+  units: seconds
+---
+apiVersion: iter8.tools/v2alpha1
+kind: Metric
+metadata:
+  name: error-count
+  namespace: iter8-system
+spec:
+  description: Number of error responses
+  params:
+    query: sum(increase(revision_app_request_latencies_count{response_code_class!='2xx',service_name=~'.*$name'}[$interval])) or on() vector(0)
+  provider: prometheus
+  type: counter
+---
+apiVersion: iter8.tools/v2alpha1
+kind: Metric
+metadata:
+  name: error-rate
+  namespace: iter8-system
+spec:
+  description: Fraction of requests with error responses
+  params:
+    query: (sum(increase(revision_app_request_latencies_count{response_code_class!='2xx',service_name=~'.*$name'}[$interval])) or on() vector(0)) / (sum(increase(revision_app_request_latencies_count{service_name=~'.*$name'}[$interval])) or on() vector(0))
+  provider: prometheus
+  sample_size:
+    name: request-count
+  type: gauge
+---
+apiVersion: iter8.tools/v2alpha1
+kind: Metric
+metadata:
+  name: mean-latency
+  namespace: iter8-system
+spec:
+  description: Mean latency
+  params:
+    query: (sum(increase(revision_app_request_latencies_sum{service_name=~'.*$name'}[$interval]))or on() vector(0)) / (sum(increase(revision_app_request_latencies_count{service_name=~'.*$name'}[$interval])) or on() vector(0))
+  provider: prometheus
+  sample_size:
+    name: request-count
+  type: gauge
+  units: milliseconds
+---
+apiVersion: iter8.tools/v2alpha1
+kind: Metric
+metadata:
+  name: request-count
+  namespace: iter8-system
+spec:
+  description: Number of requests
+  params:
+    query: sum(increase(revision_app_request_latencies_count{service_name=~'.*$name'}[$interval])) or on() vector(0)
+  provider: prometheus
+  type: counter

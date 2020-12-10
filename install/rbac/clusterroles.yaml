@@ -1,0 +1,15 @@
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: inferenceservices
+rules:
+- apiGroups:
+  - serving.kubeflow.org
+  resources:
+  - inferenceservices
+  verbs:
+  - get
+  - list
+  - patch
+  - update
+  - watch
