@@ -1,37 +1,39 @@
 #!/bin/bash
 
-# Check if ITER8_KFSERVING_ROOT env variable is set
+# Check if ITER8_KNATIVE_ROOT env variable is set
 # Explanation: https://stackoverflow.com/questions/3601515/how-to-check-if-a-variable-is-set-in-bash
 
 set -e 
 
-if [ -z "${ITER8_KFSERVING_ROOT}" ]
+if [ -z "${ITER8_KNATIVE_ROOT}" ]
 then 
-    echo "ITER8_KFSERVING_ROOT is unset or set to ''"
+    echo "ITER8_KNATIVE_ROOT is unset or set to ''"
     exit 1
 else 
-    echo "ITER8_KFSERVING_ROOT is set to '$ITER8_KFSERVING_ROOT'"
+    echo "ITER8_KNATIVE_ROOT is set to '$ITER8_KNATIVE_ROOT'"
 fi
 
-rm -rf ${ITER8_KFSERVING_ROOT}/.tmp
+# Step1: Install Knative (https://knative.dev/docs/install/any-kubernetes-cluster/#installing-the-serving-component)
 
-mkdir ${ITER8_KFSERVING_ROOT}/.tmp
+# 1(a). Install the Custom Resource Definitions (aka CRDs):
 
-cd ${ITER8_KFSERVING_ROOT}/.tmp
+kubectl apply --filename https://github.com/knative/serving/releases/download/v0.19.0/serving-crds.yaml
 
-git clone https://github.com/kubeflow/kfserving.git
+# 1(b). Install the core components of Serving (see below for optional extensions):
 
-cd kfserving 
+kubectl apply --filename https://github.com/knative/serving/releases/download/v0.19.0/serving-core.yaml
 
-./hack/quick_install.sh
 
-kubectl create ns knative-monitoring
+# Step 2: Install a network layer (Istio)
 
-kubectl apply -f https://github.com/knative/serving/releases/download/v0.18.0/monitoring-metrics-prometheus.yaml
+istioctl install -f ${ITER8_KNATIVE_ROOT}/quickstart/istio-minimal-operator.yaml 
 
-cd ${ITER8_KFSERVING_ROOT}
 
-# Install iter8-kfserving
-kubectl apply -f https://raw.githubusercontent.com/iter8-tools/iter8-kfserving/main/install/iter8-kfserving.yaml
-kubectl wait --for condition=established --timeout=120s crd/metrics.iter8.tools
-kubectl apply -f https://raw.githubusercontent.com/iter8-tools/iter8-kfserving/main/install/metrics/iter8-kfserving-metrics.yaml
+# Step 3: Install the Knative Istio Controller
+
+kubectl apply --filename https://github.com/knative/net-istio/releases/download/v0.17.0/release.yaml
+
+
+# Step 4: Install Prometheus addon for Istio (https://istio.io/latest/docs/ops/integrations/prometheus/)
+
+kubectl apply -f https://raw.githubusercontent.com/istio/istio/release-1.8/samples/addons/prometheus.yaml
