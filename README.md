@@ -40,12 +40,12 @@ kubectl apply -f samples/common/service.yaml -n knative-test
 
 **Step 7:** Verify that the service is running. This may take a couple of minutes
 ```
-kubectl wait --for condition=ready --timeout=180s ksvc/helloworld-go -n knative-test
+kubectl wait --for condition=ready --timeout=180s ksvc/sample-application -n knative-test
 ```
 **Step 8:** In a separate terminal, from your iter8-knative folder, export `SERVICE_HOSTNAME`, `INGRESS_HOST` and `INGRESS_PORT` environment variables, and generate to the `ksvc` as follows.
 ```
 export INGRESS_HOST=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
 export INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="http2")].port}')
-export SERVICE_HOSTNAME=$(kubectl get ksvc helloworld-go -n knative-test -o jsonpath='{.status.url}' | cut -d "/" -f 3)
+export SERVICE_HOSTNAME=$(kubectl get ksvc sample-application -n knative-test -o jsonpath='{.status.url}' | cut -d "/" -f 3)
 watch -n 1.0 'curl -v -H "Host: ${SERVICE_HOSTNAME}" http://${INGRESS_HOST}:${INGRESS_PORT}'
 ```

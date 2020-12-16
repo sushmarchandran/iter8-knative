@@ -1,13 +1,33 @@
 apiVersion: serving.knative.dev/v1 # Current version of Knative
 kind: Service
 metadata:
-  name: helloworld-go # The name of the app
+  name: sample-application # The name of the app
   namespace: knative-test # The namespace the app will use
 spec:
   template:
+    metadata:
+      name: sample-application-v1
     spec:
       containers:
-        - image: gcr.io/knative-samples/helloworld-go # Reference to the image of the app
-          env:
-            - name: TARGET # The environment variable printed out by the sample app
-              value: "Go Sample v1"
+        - image: docker.io/sushmarchandran/sample-application:v1 # Reference to the image of the app
+---
+apiVersion: serving.knative.dev/v1 # Current version of Knative
+kind: Service
+metadata:
+  name: sample-application # The name of the app
+  namespace: knative-test # The namespace the app will use
+spec:
+  template:
+    metadata:
+      name: sample-application-v2
+    spec:
+      containers:
+        - image: docker.io/sushmarchandran/sample-application:v2 # Reference to the image of the app
+  traffic:
+  - tag: current
+    revisionName: sample-application-v1
+    percent: 50
+  - tag: v2
+    latestRevision: true
+    percent: 50
+  
