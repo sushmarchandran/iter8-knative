@@ -1,12 +1,12 @@
 kind: ClusterRole
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: inferenceservices
+  name: knativeservice
 rules:
 - apiGroups:
-  - serving.kubeflow.org
+  - serving.knative.dev
   resources:
-  - inferenceservices
+  - services
   verbs:
   - get
   - list

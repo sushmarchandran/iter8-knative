@@ -27,8 +27,8 @@ spec:
   traffic:
   - tag: current
     revisionName: sample-application-v1
-    percent: 99
+    percent: 80
   - tag: candidate
     latestRevision: true
-    percent: 1 # should this be set to 1 in case the candidate version becomes Not Ready
+    percent: 20
   

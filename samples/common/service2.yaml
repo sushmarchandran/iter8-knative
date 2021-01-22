@@ -1,0 +1,14 @@
+# Service object for progressive experiment
+apiVersion: serving.knative.dev/v1 # Current version of Knative
+kind: Service
+metadata:
+  name: sample-application # The name of the app
+  namespace: knative-test # The namespace the app will use
+spec:
+  template:
+    metadata:
+      name: sample-application-v1
+    spec:
+      containers:
+        - image: docker.io/sushmarchandran/sample-application:v1 # Reference to the image of the app
+---
