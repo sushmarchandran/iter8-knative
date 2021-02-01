@@ -23,6 +23,8 @@ spec:
   versionInfo:
     baseline:
       name: sample-application-v1
+      tags: 
+        revision: default
       weightObjRef:
           apiVersion: serving.knative.dev/v1
           kind: Service
@@ -31,10 +33,11 @@ spec:
           fieldPath: /spec/traffic/0/percent
     candidates:
       - name: sample-application-v2
+        tags: 
+          revision: candidate-0
         weightObjRef:
           apiVersion: serving.knative.dev/v1
           kind: Service
           name: sample-application
           namespace: knative-test
           fieldPath: /spec/traffic/1/percent
-

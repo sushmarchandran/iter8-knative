@@ -11,7 +11,7 @@ experimentTypes: # keys are from enums
       rollback: finish
       finish: finish
       failure: finish
-  - name: Performance
+  - name: Conformance
     handlers:
       start: start
   - name: BlueGreen
