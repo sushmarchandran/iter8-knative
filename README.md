@@ -33,9 +33,9 @@ minikube tunnel --cleanup
 ./quickstart/ksvcsetup.sh <EXPERIMENT-TYPE>
 ```
 
-**Step 6:** In a separate terminal generate load for the knative service as follows:
+**Step 6:** In a separate terminal generate load for the knative service. Replace <NETWORK-LAYER> in the following command with one of the following network layers that iter8 has been tested with: `contour`, `gloo`, `istio` and `kourier`.
 ```
-./quickstart/generateload.sh
+./quickstart/generateload.sh <NETWORK-LAYER>
 ```
 
 

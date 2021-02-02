@@ -54,6 +54,13 @@ kubectl wait --for condition=ready --timeout=300s pods --all -n knative-serving
 if [[ "istio" == ${1} ]]; then
     ##########Installing ISTIO ###########
     echo "Installing Istio for Knative"
+    WORK_DIR=$(pwd)
+    TEMP_DIR=$(mktemp -d)
+    cd $TEMP_DIR
+    curl -L https://istio.io/downloadIstio | ISTIO_VERSION=1.8.1 sh -
+    cd istio-1.8.1
+    export PATH=$PWD/bin:$PATH
+    cd $WORK_DIR
     curl -L https://raw.githubusercontent.com/iter8-tools/iter8-knative/main/quickstart/istio-minimal-operator.yaml | istioctl install -y -f -
 
     kubectl apply --filename https://github.com/knative/net-istio/releases/download/v0.20.0/release.yaml
@@ -80,6 +87,8 @@ elif [[ "gloo" == ${1} ]]; then
     ##########Installing GLOO ###########
     echo "Installing Gloo for Knative"
     # Install Gloo and the Knative integration:
+    curl -sL https://run.solo.io/gloo/install | sh
+    export PATH=$HOME/.gloo/bin:$PATH
     glooctl install knative --install-knative=false
     echo "Gloo installed successfully"
     
@@ -122,4 +131,4 @@ kustomize build install/iter8-metrics | kubectl apply -f -
 echo "Verifying installation"
 kubectl wait --for condition=ready --timeout=300s pods --all -n knative-serving
 kubectl wait --for condition=ready --timeout=300s pods --all -n iter8-system
-kubectl wait --for condition=ready --timeout=300s pods --all -n knative-monitoring
+kubectl wait --for condition=ready --timeout=300s pods --all -n iter8-monitoring
