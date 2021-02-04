@@ -22,36 +22,32 @@ cd iter8-knative
 ```
 
 
-**Step 4:** In a separate terminal,, setup Minikube tunnel.
-```
-minikube tunnel --cleanup
-```
-
-**Step 5:** Set up the knative service for the type of experiment you wish to run. Replace <EXPERIMENT-TYPE> in the following command with one of the following experiment types that iter8 supports: `progressive`, `conformance` or `fixed-split`. This may take a couple of minutes
+**Step 4:** Set up the knative service for the type of experiment you wish to run. Replace <EXPERIMENT-TYPE> in the following command with one of the following experiment types that iter8 supports: `progressive`, `conformance` or `fixed-split`. This may take a couple of minutes.
 
 ```
 ./quickstart/ksvcsetup.sh <EXPERIMENT-TYPE>
 ```
 
-**Step 6:** In a separate terminal generate load for the knative service. Replace <NETWORK-LAYER> in the following command with one of the following network layers that iter8 has been tested with: `contour`, `gloo`, `istio` and `kourier`.
+**Step 5:** In a separate terminal generate load for the knative service.
 ```
-./quickstart/generateload.sh <NETWORK-LAYER>
+export URL_VALUE=$(kubectl get ksvc sample-application -n knative-test -o json | jq .status.address.url)
+sed "s+URL_VALUE+${URL_VALUE}+g" quickstart/fortio.yaml | kubectl apply -f -
 ```
 
 
-**Step 7:** Start your experiment. Replace <EXPERIMENT-TYPE> in the following command with one of the following experiment types that iter8 supports: `progressive`, `conformance` or `fixed-split`. 
+**Step 6:** Start your experiment. Replace <EXPERIMENT-TYPE> in the following command with one of the following experiment types that iter8 supports: `progressive`, `conformance` or `fixed-split`. 
 
 ```
 ./quickstart/startexperiment.sh <EXPERIMENT-TYPE>
 ```
 
-**Step 8:** Observe the experiment object
+**Step 7:** Observe the experiment object
 ```
 kubectl get experiment -n knative-test -oyaml
 ```
 
 
-**Step 9:** *In a separate terminal,* periodically describe the experiment.
+**Step 8:** *In a separate terminal,* periodically describe the experiment.
 
 **Install** [iter8ctl](https://github.com/iter8-tools/iter8ctl). You can change the directory where `iter8ctl` binary is installed by changing GOBIN below.
 ```shell

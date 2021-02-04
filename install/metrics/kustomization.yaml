@@ -1,4 +1,0 @@
-namespace: iter8-system
-resources:
- - cadvisor-metrics.yaml
- - revision-metrics.yaml
