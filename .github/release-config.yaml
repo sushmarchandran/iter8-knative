@@ -3,6 +3,8 @@ categories:
     labels:
       - 'feature'
       - 'enhancement'
+  - title: '🧹 Cleaned or removed features'
+    label: 'remove'
   - title: '🐛 Bug Fixes'
     labels:
       - 'fix'
@@ -10,7 +12,15 @@ categories:
       - 'bug'
   - title: '🧰 Maintenance'
     label: 'chore'
+  - title: '📝 Documentation'
+    labels:
+      - 'doc'
+      - 'documentation'
+  - title: '🚦 Tests'
+    labels:
+      - 'test'
+      - 'tests'
+change-template: '- #$NUMBER: $TITLE'
 template: |
   ## What’s Changed
-
   $CHANGES
