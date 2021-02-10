@@ -5,4 +5,4 @@ resources:
 
 images:
 - name: iter8/etc3:latest
-  newTag: latest 
+  newTag: 0.1.5-pre 
