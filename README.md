@@ -57,7 +57,7 @@ GO111MODULE=on GOBIN=/usr/local/bin go get github.com/iter8-tools/iter8ctl@v0.1.
 Periodically describe the experiment.
 ```
 while clear; do
-  kubectl get experiment <EXPERIMENT-NAME> -o yaml | iter8ctl describe -f -
+  kubectl get experiment <EXPERIMENT-NAME> -n knative-test -o yaml | iter8ctl describe -f -
   sleep 15
 done
 ```
