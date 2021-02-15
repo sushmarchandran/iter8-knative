@@ -14,7 +14,7 @@ experimentTypes: # keys are from enums
   - name: Conformance
     handlers:
       start: start
-  - name: BlueGreen
+  - name: A/B/N
     handlers:
       start: start
       rollback: finish

@@ -1,11 +1,11 @@
 resources:
 - configmaps
-- github.com/iter8-tools/etc3/config/install/?ref=v0.1.6-pre 
+- github.com/iter8-tools/etc3/config/install/?ref=v0.1.9-pre 
 # To use a tagged release, for example v0.1.0-rc, change main to v0.1.0-rc in the above three lines
 
 images:
 - name: iter8/etc3:latest
-  newTag: 0.1.6-pre 
+  newTag: 0.1.9-pre 
 
 
 

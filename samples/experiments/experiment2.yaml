@@ -5,7 +5,7 @@ metadata:
 spec:
   target: knative-test/sample-application
   strategy:
-    type: Performance
+    testingPattern: Conformance
     handlers:
       start: none
       finish: none
@@ -19,7 +19,7 @@ spec:
       upperLimit: "0.01"
   duration:
     intervalSeconds: 20
-    maxIterations: 8
+    iterationsPerLoop: 8
   versionInfo:
     baseline:
       name: sample-application-v1

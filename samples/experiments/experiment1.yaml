@@ -5,7 +5,7 @@ metadata:
 spec:
   target: knative-test/sample-application
   strategy:
-    type: Canary
+    testingPattern: Canary
     handlers:
       start: none
       finish: none
@@ -19,12 +19,13 @@ spec:
       upperLimit: "0.01"
   duration:
     intervalSeconds: 20
-    maxIterations: 8
+    iterationsPerLoop: 8
   versionInfo:
     baseline:
       name: sample-application-v1
-      tags: 
-        revision: default
+      variables:
+        - name: revision
+          value: default 
       weightObjRef:
           apiVersion: serving.knative.dev/v1
           kind: Service
@@ -33,8 +34,9 @@ spec:
           fieldPath: /spec/traffic/0/percent
     candidates:
       - name: sample-application-v2
-        tags: 
-          revision: candidate-0
+        variables:
+          - name: revision
+            value: candidate-0
         weightObjRef:
           apiVersion: serving.knative.dev/v1
           kind: Service

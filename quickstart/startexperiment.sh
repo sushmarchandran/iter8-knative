@@ -6,7 +6,7 @@ set -e
 EXPERIMENT_TYPE="conformance progressive fixed-split"
 if [[ ! " ${EXPERIMENT_TYPE[@]} " =~ " ${1} " ]]; then
     echo "Experiment Type ${1} unsupported"
-    echo "Use one of progreesive, conformance, fixed-split"
+    echo "Use one of progressive, conformance, fixed-split"
     exit 1
 fi
 

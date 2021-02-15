@@ -5,15 +5,13 @@ metadata:
 spec:
   target: knative-test/sample-application
   strategy:
-    type: Canary
+    testingPattern: Canary
+    deploymentPattern: FixedSplit
     handlers:
       start: none
       finish: none
       rollback: none
       failure: none
-    weights:
-      algorithm: FixedSplit
-      weightDistribution: [60, 40]
   criteria:
     objectives:
     - metric: mean-latency
@@ -22,7 +20,7 @@ spec:
       upperLimit: "0.01"
   duration:
     intervalSeconds: 20
-    maxIterations: 8
+    iterationsPerLoop: 8
   versionInfo:
     baseline:
       name: sample-application-v1
